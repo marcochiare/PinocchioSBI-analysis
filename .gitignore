@@ -1,0 +1,7 @@
+__pycache__
+jobs/sbi-logs
+notebooks/sbi-logs
+*.egg-info
+optuna/
+weights/
+*.log
