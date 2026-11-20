@@ -63,20 +63,22 @@ MODE="${MODE:-richness}"
 
 PROFILE_MASS_CUT="${PROFILE_MASS_CUT:-1e13}"
 MAX_MASS="${MAX_MASS:-1e16}"
-REDSHIFT_LIMIT="${REDSHIFT_LIMIT:-2.}"
-LMB_MIN="${LMB_MIN:-5}"
-LMB_LIMIT="${LMB_LIMIT:-400}"
+REDSHIFT_MIN="${REDSHIFT_MIN:-0.2}"
+REDSHIFT_LIMIT="${REDSHIFT_LIMIT:-1.}"
+LMB_MIN="${LMB_MIN:-30}"
+LMB_LIMIT="${LMB_LIMIT:-300}"
 
-Z_BINS="${Z_BINS:-10}"
-LMB_BINS="${LMB_BINS:-10}"
-MASS_BINS="${MASS_BINS:-10}"
+Z_BINS="${Z_BINS:-4}"
+MASS_BINS="${MASS_BINS:-5}"
+LMB_BINS="${LMB_BINS:-4}"
 
 Z_LOG_SPACING="${Z_LOG_SPACING:-0}"
-LMB_LOG_SPACING="${LMB_LOG_SPACING:-0}"
 MASS_LOG_SPACING="${MASS_LOG_SPACING:-1}"
+LMB_LOG_SPACING="${LMB_LOG_SPACING:-0}"
 
-Z_VARIABLE_SPACING="${Z_VARIABLE_SPACING:-1}"
-MASS_VARIABLE_SPACING="${MASS_VARIABLE_SPACING-1}"
+Z_VARIABLE_SPACING="${Z_VARIABLE_SPACING:-0}"
+MASS_VARIABLE_SPACING="${MASS_VARIABLE_SPACING:-1}"
+LMB_VARIABLE_SPACING="${LMB_VARIABLE_SPACING:-1}"
 
 # ====================== #
 # PRINTS
@@ -92,17 +94,19 @@ echo -e "\033[32m[JOB]\033[0m MODE ................... = ${MODE}"
 echo -e "\033[32m[JOB]\033[0m TOTAL RUNS ............. = ${TOT_RUNS}" 
 echo -e "\033[32m[JOB]\033[0m PROFILE_MASS_CUT ....... = ${PROFILE_MASS_CUT}" 
 echo -e "\033[32m[JOB]\033[0m MAX MASS ............... = ${MAX_MASS}" 
+echo -e "\033[32m[JOB]\033[0m REDSHIFT_MIN ........... = ${REDSHIFT_MIN}" 
 echo -e "\033[32m[JOB]\033[0m REDSHIFT_LIMIT ......... = ${REDSHIFT_LIMIT}" 
 echo -e "\033[32m[JOB]\033[0m RICHNESS_MIN ........... = ${LMB_MIN}" 
 echo -e "\033[32m[JOB]\033[0m RICHNESS_LIMIT ......... = ${LMB_LIMIT}" 
 echo -e "\033[32m[JOB]\033[0m REDSHIFT_BINS .......... = ${Z_BINS}" 
-echo -e "\033[32m[JOB]\033[0m RICHNESS_BINS .......... = ${LMB_BINS}" 
 echo -e "\033[32m[JOB]\033[0m MASS_BINS .............. = ${MASS_BINS}" 
+echo -e "\033[32m[JOB]\033[0m RICHNESS_BINS .......... = ${LMB_BINS}" 
 echo -e "\033[32m[JOB]\033[0m Z_LOG_SPACING .......... = ${Z_LOG_SPACING}" 
-echo -e "\033[32m[JOB]\033[0m LMB_LOG_SPACING ........ = ${LMB_LOG_SPACING}" 
 echo -e "\033[32m[JOB]\033[0m MASS_LOG_SPACING ....... = ${MASS_LOG_SPACING}" 
+echo -e "\033[32m[JOB]\033[0m LMB_LOG_SPACING ........ = ${LMB_LOG_SPACING}" 
 echo -e "\033[32m[JOB]\033[0m Z_VARIABLE_SPACING ..... = ${Z_VARIABLE_SPACING}" 
 echo -e "\033[32m[JOB]\033[0m MASS_VARIABLE_SPACING .. = ${MASS_VARIABLE_SPACING}" 
+echo -e "\033[32m[JOB]\033[0m LMB_VARIABLE_SPACING ... = ${LMB_VARIABLE_SPACING}" 
 echo -e "\033[32m[JOB]\033[0m ........................ " 
 echo -e "\033[32m[JOB]\033[0m PYTHON ................. = $(which python)"
 echo -e "\033[32m[JOB]\033[0m PYTHON VERSION ......... = $(python -V)"
@@ -118,26 +122,27 @@ ARGS=(
 	--stats-dir "${STATS_DIR}"
 	--mode "${MODE}"
 	--base-name "${RUN_BASENAME}"
+	--z-min-shell "${REDSHIFT_MIN}"
 	--z-max-shell "${REDSHIFT_LIMIT}"
-	--lmb-min "${LMB_MIN}"
-	--lmb-max "${LMB_LIMIT}"
 	--m-threshold "${PROFILE_MASS_CUT}"
 	--mass-max "${MAX_MASS}"
+	--lmb-min "${LMB_MIN}"
+	--lmb-max "${LMB_LIMIT}"
 	--z-bins "${Z_BINS}" 
-	--lmb-bins "${LMB_BINS}"
 	--mass-bins "${MASS_BINS}"
+	--lmb-bins "${LMB_BINS}"
 )
 
 if [[ "${Z_LOG_SPACING}" == "1" ]]; then
 	ARGS+=(--log-z)
 fi
 
-if [[ "${LMB_LOG_SPACING}" == "1" ]]; then
-	ARGS+=(--log-lmb)
-fi
-
 if [[ "${MASS_LOG_SPACING}" == "1" ]]; then
 	ARGS+=(--log-mass)
+fi
+
+if [[ "${LMB_LOG_SPACING}" == "1" ]]; then
+	ARGS+=(--log-lmb)
 fi
 
 if [[ "${Z_VARIABLE_SPACING}" == "1" ]]; then
@@ -146,6 +151,10 @@ fi
 
 if [[ "${MASS_VARIABLE_SPACING}" == "1" ]]; then
 	ARGS+=(--use-massknee)
+fi
+
+if [[ "${LMB_VARIABLE_SPACING}" == "1" ]]; then
+	ARGS+=(--use-lmbknee)
 fi
 
 if [[ "${TOT_RUNS}" -gt 0 ]]; then
