@@ -1,0 +1,13 @@
+# PARAMETER (UNIFORM)   LOW           HIGH
+  Omega_m                     0.1          0.5
+  sigma_8                     0.6          1.2
+  h                           0.6          0.8
+
+# PARAMETER (GAUSSIAN)  MEAN          STD
+  log10M_1                11.1048       0.0218
+  alpha                  0.509872       0.0235
+  epsi                    1.20281       0.0863
+  sigm_intr              0.464651       0.1018
+
+# PARAMETER (DERIVED)   LOW           HIGH       MAPPING
+  dlog10M                       1      1.47712   log10M_min = log10M_1 - dlog10M
