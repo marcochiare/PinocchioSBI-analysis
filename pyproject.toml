@@ -1,0 +1,29 @@
+[project]
+name = "pinsbi"
+description = "utilities for PinocchioSBI"
+version = "0.1.0"
+authors = [
+	{name = "Marco Chiarenza", email = "marco.chiarenza@inaf.it"},
+]
+dependencies = [
+	"numpy",
+	"sbi",
+	"torch",
+	"matplotlib",
+	"optuna",
+	"tqdm",
+	"camb",
+	"numba",
+	"astropy",
+	"pyccl",
+	"getdist",
+	"cython",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pinsbi*"]
